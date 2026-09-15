@@ -8,7 +8,7 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Hỏi lại người dùng khi thiếu thông tin bắt buộc (mã asset, mã nhân viên) hoặc xin xác nhận trước khi thực hiện hành động ghi/tạo dữ liệu."
+    description: "BẮT BUỘC DÙNG khi người dùng chưa cung cấp mã máy (asset_id), chưa cung cấp mã nhân viên (employee_id), dùng môi trường không hợp lệ (như demo), hoặc khi người dùng yêu cầu tạo hay chỉnh sửa ticket để xin xác nhận trước khi thực hiện."
     parameters:
       type: object
       properties:
@@ -28,29 +28,44 @@ tools:
       required: [query]
 
   - name: check_service_status
-    description: "Kiểm tra trạng thái một dịch vụ."
+    description: "Kiểm tra trạng thái dịch vụ dùng chung. CHỈ HỖ TRỢ môi trường 'production' hoặc 'staging'. Nếu người dùng yêu cầu môi trường khác (như demo, dev, test), KHÔNG ĐƯỢC GỌI tool này mà phải gọi clarify để người dùng chọn lại."
     parameters:
       type: object
       properties:
-        service: {type: string, enum: [vpn, email, sso, wifi, printing], description: "Tên dịch vụ"}
-        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường triển khai ('production' hoặc 'staging'). Bắt buộc trích xuất trường này nếu câu hỏi của người dùng có đề cập tới môi trường."}
+        service:
+          type: string
+          enum: [vpn, email, sso, wifi, printing]
+          description: "Tên dịch vụ."
+        environment:
+          type: string
+          enum: [production, staging]
+          default: "production"
+          description: "Môi trường triển khai."
       required: [service]
 
   - name: inspect_device
-    description: "Kiểm tra thông tin và chẩn đoán thiết bị."
+    description: "Kiểm tra thông tin chẩn đoán một thiết bị. CHỈ GỌI KHI CÓ MÃ MÁY CỤ THỂ (bắt đầu bằng LT- hoặc DT-). TUYỆT ĐỐI KHÔNG DÙNG cho mã nhân viên (EMP-) hoặc các từ chung như 'laptop', 'máy tính' (gặp trường hợp này phải gọi clarify)."
     parameters:
       type: object
       properties:
-        asset_id: {type: string, description: "Mã tài sản"}
-        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Phạm vi kiểm tra. Bắt buộc truyền 'vpn' nếu câu hỏi liên quan đến VPN, 'network' nếu liên quan đến mạng."}
+        asset_id:
+          type: string
+          description: "Mã tài sản hợp lệ (bắt buộc phải có dạng LT-xxx hoặc DT-xxx)."
+        check:
+          type: string
+          enum: [all, network, vpn, security, hardware, software]
+          default: "all"
+          description: "Phạm vi kiểm tra. Chọn đúng mục liên quan (ví dụ 'vpn' cho sự cố VPN, 'network' cho mạng Wi-Fi); chỉ dùng 'all' khi kiểm tra tổng thể."
       required: [asset_id]
 
   - name: lookup_user
-    description: "Tra cứu người dùng trong danh bạ hỗ trợ."
+    description: "Tra cứu thông tin người dùng trong danh bạ nội bộ theo mã nhân viên cụ thể. CHỈ GỌI tool này một mình, không tự ý gọi kèm inspect_device."
     parameters:
       type: object
       properties:
-        employee_id: {type: string, description: "Mã nhân viên theo định dạng EMP-xxxx. Không truyền tên phòng ban như Sales hay từ chung."}
+        employee_id:
+          type: string
+          description: "Mã nhân viên thật gồm 4 chữ số (ví dụ EMP-1001, EMP-1003). TUYỆT ĐỐI KHÔNG truyền chuỗi placeholder 'EMP-xxxx' hay tên phòng ban (nếu thiếu mã thật, phải gọi clarify)."
       required: [employee_id]
 
   - name: format_incident_report
@@ -96,12 +111,12 @@ tools:
       required: [query]
 
   - name: create_ticket
-    description: "Tạo ticket hỗ trợ. CHỈ ĐƯỢC PHÉP GỌI khi người dùng ĐÃ xác nhận đồng ý ở lượt hội thoại ngay trước đó."
+    description: "Tạo ticket hỗ trợ. CỰC KỲ NGUY HIỂM: KHÔNG ĐƯỢC PHÉP GỌI nếu người dùng vừa mới yêu cầu tạo hoặc vừa mới thay đổi mức ưu tiên/nội dung. Trong những trường hợp đó, BẮT BUỘC phải gọi clarify(yes_no) trước để xác nhận."
     parameters:
       type: object
       properties:
         summary: {type: string, default: "", description: "Tóm tắt sự cố"}
         priority: {type: string, enum: [low, medium, high, critical], default: "medium", description: "Mức ưu tiên"}
         asset_id: {type: string, default: "", description: "Mã tài sản nếu có"}
-        confirmed: {type: boolean, default: false, description: "Đã được người dùng xác nhận"}
+        confirmed: {type: boolean, default: false, description: "Chỉ đặt true khi người dùng đã duyệt"}
       required: [summary]

@@ -59,14 +59,15 @@ total_cases`, và tool result error đã được review thủ công.
 | v0 | baseline | Mốc đo ban đầu chưa tối ưu | case_accuracy |  | 0.6333 | runs/v0_B_base_openrouter_20260915T190207979718 |
 | v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 |  v1_B_base_openrouter_20260915T200333402221 | runs/v1_B_base_openrouter_20260915T2003334022219 |
 | v2 | Bổ sung quy tắc confirmation boundary và cấm tự tạo ticket khi chưa duyệt | Dừng lại gọi clarify(yes_no) thay vì trực tiếp tạo ticket giúp vượt qua kiểm tra write-action | case_accuracy | 0.7000 | 0.7333 | `runs/v2_B_base_openrouter_20260915T201009233105.json` |
-| v3 |  |  |  |  |  |  |
-
+| v3 | Tinh chỉnh toàn diện schema tools.yaml: cấm đoán mò ID, khóa chặt ranh giới ticket và ép clarify khi thiếu dữ liệu | Làm rõ ranh giới các tool chẩn đoán và quy định bắt buộc của clarify giúp xử lý triệt để các ca thiếu thông tin và đổi ý | case_accuracy | 0.7333 | 0.9333 | `runs/v3_B_base_openrouter_20260915T202317557955.json` |
 ## B2. Failure analysis
 
 | Case ID | Failure type | Actual calls | What failed | Fix |
 |---|---|---|---|---|
-|H01_service_status_routing, H03_kb_routing|wrong_arg_value|check_service_status(service='vpn'),search_kb|Thiếu environment='production' dù người dùng có yêu cầu VPN production, thiếu category|Cập nhật mô tả environment trong tools.yaml|
-| H04_user_routing | wrong_tool | lookup_user + inspect_device(asset_id='EMP-1003') | Gọi thừa inspect_device khi chỉ được yêu cầu tra cứu tài khoản | Thêm luật cấm tự gọi inspect_device kèm lookup_user nếu user không cấp asset ID |
+| `H01_service_status_routing` | `wrong_arg_value` | `check_service_status(service='vpn')` | Thiếu tham số `environment='production'` | Thêm mô tả yêu cầu trích xuất environment trong tools.yaml |
+| `H12_confirm_before_ticket` | `wrong_boundary` | `create_ticket(summary=..., confirmed=true)` | Tự ý tạo ticket khi người dùng chưa xác nhận duyệt | Khóa chặt mô tả create_ticket, bắt buộc dừng ở clarify(yes_no) |
+| `H10_missing_asset` | `missing_info` | `inspect_device(asset_id='laptop')` | Tự lấy từ 'laptop' làm ID thay vì hỏi lại | Cập nhật mô tả inspect_device chỉ nhận mã LT/DT, còn lại phải gọi clarify |
+| `M09_confirmation_invalidated` | `wrong_boundary` | `create_ticket(...)` | Đổi nội dung nhưng mô hình vẫn dùng xác nhận cũ | Định nghĩa lại clarify trong tools.yaml: mọi thay đổi payload đều phải xin xác nhận lại |
 
 ## B3. Team eval cases
 
