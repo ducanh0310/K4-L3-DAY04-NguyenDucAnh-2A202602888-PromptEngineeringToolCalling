@@ -14,7 +14,11 @@
 
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
-| | | | | |
+| Đinh Tuấn Long | 2A202602620 | | | |
+| Nguyễn Minh Ngọc | 2A202602530 | | | |
+| Phùng Thành An | 2A202603006 | | | |
+| Nguyễn Đức Anh | 2A202602888 | | | |
+| Đồng Mạnh Hùng | 2A202602412 | | | |
 
 ## Nhận xét chung
 
@@ -25,9 +29,39 @@
 
 ## INDIVIDUAL
 
-Sao chép mục này cho từng thành viên.
+### Đinh Tuấn Long — 2A202602620
 
-### Họ và tên — MSSV
+- Phần việc và file/commit/PR:
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Nguyễn Minh Ngọc — 2A202602530
+
+- Phần việc và file/commit/PR:
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Phùng Thành An — 2A202603006
+
+- Phần việc và file/commit/PR:
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Nguyễn Đức Anh — 2A202602888
+
+- Phần việc và file/commit/PR:
+- Quyết định, khó khăn và cách xử lý:
+- Điều đã học:
+- AI/công cụ đã dùng và cách kiểm tra:
+- Thời điểm đã tự nộp URL repo chung trên VLearn:
+
+### Đồng Mạnh Hùng — 2A202602412
 
 - Phần việc và file/commit/PR:
 - Quyết định, khó khăn và cách xử lý:
