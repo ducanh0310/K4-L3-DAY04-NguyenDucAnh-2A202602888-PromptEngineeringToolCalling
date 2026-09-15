@@ -57,8 +57,8 @@ total_cases`, và tool result error đã được review thủ công.
 | Version | Prompt/tool change | Hypothesis | Metric | Before | After | Run file |
 |---|---|---|---|---:|---:|---|
 | v0 | baseline | Mốc đo ban đầu chưa tối ưu | case_accuracy |  | 0.6333 | runs/v0_B_base_openrouter_20260915T190207979718 |
-| v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 |  0.7667 | runs/v1_B_base_openrouter_20260915T2003334022219 |
-| v2 |  |  |  |  |  |  |
+| v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 |  v1_B_base_openrouter_20260915T200333402221 | runs/v1_B_base_openrouter_20260915T2003334022219 |
+| v2 | Bổ sung quy tắc confirmation boundary và cấm tự tạo ticket khi chưa duyệt | Dừng lại gọi clarify(yes_no) thay vì trực tiếp tạo ticket giúp vượt qua kiểm tra write-action | case_accuracy | 0.7000 | 0.7333 | `runs/v2_B_base_openrouter_20260915T201009233105.json` |
 | v3 |  |  |  |  |  |  |
 
 ## B2. Failure analysis
@@ -66,6 +66,7 @@ total_cases`, và tool result error đã được review thủ công.
 | Case ID | Failure type | Actual calls | What failed | Fix |
 |---|---|---|---|---|
 |H01_service_status_routing, H03_kb_routing|wrong_arg_value|check_service_status(service='vpn'),search_kb|Thiếu environment='production' dù người dùng có yêu cầu VPN production, thiếu category|Cập nhật mô tả environment trong tools.yaml|
+| H04_user_routing | wrong_tool | lookup_user + inspect_device(asset_id='EMP-1003') | Gọi thừa inspect_device khi chỉ được yêu cầu tra cứu tài khoản | Thêm luật cấm tự gọi inspect_device kèm lookup_user nếu user không cấp asset ID |
 
 ## B3. Team eval cases
 

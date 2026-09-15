@@ -42,7 +42,7 @@ tools:
       type: object
       properties:
         asset_id: {type: string, description: "Mã tài sản"}
-        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Nhóm kiểm tra"}
+        check: {type: string, enum: [all, network, vpn, security, hardware, software], default: "all", description: "Phạm vi kiểm tra. Bắt buộc truyền 'vpn' nếu câu hỏi liên quan đến VPN, 'network' nếu liên quan đến mạng."}
       required: [asset_id]
 
   - name: lookup_user
@@ -50,7 +50,7 @@ tools:
     parameters:
       type: object
       properties:
-        employee_id: {type: string, description: "Mã nhân viên"}
+        employee_id: {type: string, description: "Mã nhân viên theo định dạng EMP-xxxx. Không truyền tên phòng ban như Sales hay từ chung."}
       required: [employee_id]
 
   - name: format_incident_report
