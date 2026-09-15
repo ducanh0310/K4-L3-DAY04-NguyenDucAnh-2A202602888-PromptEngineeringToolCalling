@@ -1,8 +1,14 @@
 # Day 04 Lab v3 Report — Trợ lý AI của nhóm
 
-- Lĩnh vực tự chọn:
+- Lĩnh vực tự chọn: IT Helpdesk
 - Nhiệm vụ và luồng cơ bản đã chốt trước v0:
-- Đường dẫn bộ 30 câu cơ bản và 12 câu an toàn; commit chốt bộ trước v0:
+  + Nhiệm vụ: Hỗ trợ kỹ thuật IT nội bộ gồm: kiểm tra sự cố email/VPN, tra cứu thông tin/tình trạng thiết bị máy tính, tìm kiếm hướng dẫn và chính sách nội bộ, thu thập thông tin làm rõ khi người dùng cung cấp thiếu, và tạo ticket hỗ trợ kỹ thuật khi có xác nhận.
+  + Luồng cơ bản:
+    1. Tiếp nhận câu hỏi -> Phân loại ý định (tra cứu quy định qua `policy`, kiểm tra máy qua `search_device_info`, hoặc yêu cầu hỗ trợ kỹ thuật).
+    2. Nếu yêu cầu thiếu thông tin cần thiết (như thiếu mã máy, mô tả lỗi mơ hồ) -> Gọi tool `clarify` để hỏi lại, tuyệt đối không tự bịa thông tin.
+    3. Nếu cần tạo ticket (`create_ticket`) -> Yêu cầu người dùng xác nhận thông tin trước khi thực hiện; tôn trọng quyết định hủy/sửa ở các lượt sau của hội thoại.
+    4. Giữ an toàn dữ liệu: Từ chối chia sẻ mật khẩu, token hoặc thông tin nhạy cảm ra ngoài.
+- Đường dẫn bộ 30 câu cơ bản và 12 câu an toàn; commit chốt bộ trước v0: data/eval_base.json (commit: 2c1a5ec)
 - Chức năng mở rộng ngoài luồng cơ bản (nếu có; tối đa 10 trong tổng 100 điểm):
 
 ## Team
@@ -50,8 +56,8 @@ total_cases`, và tool result error đã được review thủ công.
 
 | Version | Prompt/tool change | Hypothesis | Metric | Before | After | Run file |
 |---|---|---|---|---:|---:|---|
-| v0 | baseline |  |  |  |  |  |
-| v1 |  |  |  |  |  |  |
+| v0 | baseline | Mốc đo ban đầu chưa tối ưu | case_accuracy |  | 0.6333 | runs/v0_B_base_openrouter_20260915T190207979718 |
+| v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 | 0.76 | runs/v1_B_base_openrouter_20260915T194501293869 |
 | v2 |  |  |  |  |  |  |
 | v3 |  |  |  |  |  |  |
 
@@ -59,7 +65,7 @@ total_cases`, và tool result error đã được review thủ công.
 
 | Case ID | Failure type | Actual calls | What failed | Fix |
 |---|---|---|---|---|
-|  |  |  |  |  |
+|H01_service_status_routing, H03_kb_routing|wrong_arg_value|check_service_status(service='vpn'),search_kb|Thiếu environment='production' dù người dùng có yêu cầu VPN production, thiếu category|Cập nhật mô tả environment trong tools.yaml|
 
 ## B3. Team eval cases
 
