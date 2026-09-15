@@ -1,7 +1,285 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Team-authored original IT Helpdesk eval cases: 5 single-turn query cases and 5 multi-turn cases.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G01_vpn_check_staging",
+      "phase": "B",
+      "suite": "base",
+      "query": "Dịch vụ VPN ở môi trường staging hiện tại thế nào?",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {
+              "service": "vpn",
+              "environment": "staging"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "environment_arg",
+        "difficulty": "medium",
+        "what_it_tests": "Trích xuất đúng service=vpn và environment=staging."
+      }
+    },
+    {
+      "id": "G02_inspect_desktop",
+      "phase": "B",
+      "suite": "base",
+      "query": "Kiểm tra kết nối mạng ethernet của máy bàn DT-102 giúp tôi.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "DT-102",
+              "check": "network"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "route_device",
+        "difficulty": "easy",
+        "what_it_tests": "Gọi inspect_device với check=network cho asset_id DT-102."
+      }
+    },
+    {
+      "id": "G03_kb_wifi",
+      "phase": "B",
+      "suite": "base",
+      "query": "Tìm hướng dẫn cách kết nối Wifi SecureGuest trên điện thoại công ty.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_kb",
+            "args": {
+              "category": "network"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "route_howto",
+        "difficulty": "medium",
+        "what_it_tests": "Tìm hướng dẫn wifi trong knowledge base category network."
+      }
+    },
+    {
+      "id": "G04_user_lookup_hung",
+      "phase": "B",
+      "suite": "base",
+      "query": "Tra thông tin tài khoản nhân viên EMP-1005 và các thiết bị được gán.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1005"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "route_employee",
+        "difficulty": "easy",
+        "what_it_tests": "Tra cứu nhân viên bằng employee_id."
+      }
+    },
+    {
+      "id": "G05_out_of_scope_weather",
+      "phase": "B",
+      "suite": "base",
+      "query": "Hôm nay thời tiết Hà Nội thế nào?",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Từ chối trả lời và không gọi tool cho yêu cầu ngoài IT helpdesk."
+      }
+    },
+    {
+      "id": "G06_missing_asset_then_provide",
+      "phase": "B",
+      "suite": "base",
+      "is_multiturn": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Máy của tôi không kết nối được email."
+        },
+        {
+          "role": "user",
+          "content": "Mã máy của tôi là LT-305."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-305",
+              "check": "email"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_context",
+        "difficulty": "medium",
+        "what_it_tests": "Kết hợp thông tin mã máy được cung cấp ở lượt sau để gọi inspect_device."
+      }
+    },
+    {
+      "id": "G07_intent_change_cancel_ticket",
+      "phase": "B",
+      "suite": "base",
+      "is_multiturn": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tạo ticket báo lỗi mạng cho LT-204."
+        },
+        {
+          "role": "user",
+          "content": "À thôi không cần tạo ticket nữa, tra giúp tôi tài khoản EMP-1002."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {
+              "employee_id": "EMP-1002"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "latest_intent_replacement",
+        "difficulty": "hard",
+        "what_it_tests": "Hủy ý định tạo ticket ở lượt trước, ưu tiên ý định tra cứu nhân viên ở lượt mới nhất."
+      }
+    },
+    {
+      "id": "G08_confirm_ticket_creation",
+      "phase": "B",
+      "suite": "base",
+      "is_multiturn": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tạo ticket hỗ trợ kỹ thuật cho máy LT-204 bị lỗi hỏng màn hình."
+        },
+        {
+          "role": "user",
+          "content": "Đã xác nhận, hãy tạo ticket ngay giúp tôi."
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "create_ticket",
+            "args": {
+              "asset_id": "LT-204",
+              "issue_type": "hardware",
+              "description": "Hỏng màn hình"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "confirm_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Chỉ tạo ticket sau khi người dùng đã xác nhận ở lượt hội thoại thứ 2."
+      }
+    },
+    {
+      "id": "G09_policy_query_multi_turn",
+      "phase": "B",
+      "suite": "base",
+      "is_multiturn": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Công ty có chính sách về thiết bị làm việc không?"
+        },
+        {
+          "role": "user",
+          "content": "Tra cứu chính sách mượn màn hình phụ để làm việc từ xa."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "query": "màn hình phụ làm việc từ xa"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "policy_query",
+        "difficulty": "medium",
+        "what_it_tests": "Tra cứu đúng chính sách với từ khóa ở lượt hội thoại mới nhất."
+      }
+    },
+    {
+      "id": "G10_multi_turn_switch_device",
+      "phase": "B",
+      "suite": "base",
+      "is_multiturn": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra kết nối VPN của máy LT-204."
+        },
+        {
+          "role": "user",
+          "content": "Tôi nhầm, kiểm tra phần cứng máy DT-101 mới đúng."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "DT-101",
+              "check": "hardware"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "latest_intent_replacement",
+        "difficulty": "hard",
+        "what_it_tests": "Đổi thông tin máy và hình thức kiểm tra sang DT-101 hardware ở lượt sau."
+      }
+    }
+  ]
 }
