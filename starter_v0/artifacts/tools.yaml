@@ -23,7 +23,7 @@ tools:
       type: object
       properties:
         query: {type: string, default: "", description: "Nội dung cần tìm"}
-        category: {type: string, enum: [all, vpn, email, wifi, printing, account, security, hardware, software, meeting_room], default: "all", description: "Nhóm hướng dẫn"}
+        category: {type: string, enum: [all, vpn, email, wifi, printing, account, security, hardware, software, meeting_room], default: "all", description: "Nhóm hướng dẫn kỹ thuật. Luôn chọn đúng danh mục cụ thể (ví dụ: 'email' khi hỏi về Outlook/Webmail, 'vpn' khi hỏi về mạng riêng ảo) thay vì để mặc định 'all'."}
         top_k: {type: integer, default: 3, description: "Số kết quả"}
       required: [query]
 
@@ -33,7 +33,7 @@ tools:
       type: object
       properties:
         service: {type: string, enum: [vpn, email, sso, wifi, printing], description: "Tên dịch vụ"}
-        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường"}
+        environment: {type: string, enum: [production, staging], default: "production", description: "Môi trường triển khai ('production' hoặc 'staging'). Bắt buộc trích xuất trường này nếu câu hỏi của người dùng có đề cập tới môi trường."}
       required: [service]
 
   - name: inspect_device
