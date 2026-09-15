@@ -15,10 +15,9 @@
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
 | Nguyễn Đức Anh | 2A202602888 | ducanh0310 | Trưởng nhóm, xây dựng Agent loop, Tối ưu System Prompt v0-v3, Xây dựng Web UI | starter_v0/server_ui.py, artifacts/system_prompt.md |
-| Nguyễn Minh Ngọc | 2A202602530 | ngonguyenminhngoc234it-gif
-cnm | Thiết kế bộ 10 test case nhóm (eval_group.json) 5 đơn lượt + 5 nhiều lượt, Tối ưu hóa tools.yaml | data/eval_group.json, artifacts/tools.yaml |
-| Đồng Mạnh Hùng | 2A202602412 | Hung23020370
- | Đánh giá an toàn & bảo mật dữ liệu (eval_adversarial.json), Viết báo cáo kỹ thuật REPORT.md | data/eval_adversarial.json, artifacts/REPORT.md |
+| Nguyễn Minh Ngọc | 2A202602530 | nguyenminhngoc234it-gif
+ | Thiết kế bộ 10 test case nhóm (eval_group.json) 5 đơn lượt + 5 nhiều lượt, Tối ưu hóa tools.yaml | data/eval_group.json, artifacts/tools.yaml |
+| Đồng Mạnh Hùng | 2A202602412 | hungdm | Đánh giá an toàn & bảo mật dữ liệu (eval_adversarial.json), Viết báo cáo kỹ thuật REPORT.md | data/eval_adversarial.json, artifacts/REPORT.md |
 
 ## Nhận xét chung
 
