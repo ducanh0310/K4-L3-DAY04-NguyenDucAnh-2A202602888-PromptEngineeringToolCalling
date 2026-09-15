@@ -8,7 +8,7 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Hỏi lại người dùng khi thiếu thông tin bắt buộc (mã asset, mã nhân viên) hoặc xin xác nhận trước khi thực hiện hành động ghi/tạo dữ liệu."
     parameters:
       type: object
       properties:
@@ -96,7 +96,7 @@ tools:
       required: [query]
 
   - name: create_ticket
-    description: "Tạo một ticket hỗ trợ."
+    description: "Tạo ticket hỗ trợ. CHỈ ĐƯỢC PHÉP GỌI khi người dùng ĐÃ xác nhận đồng ý ở lượt hội thoại ngay trước đó."
     parameters:
       type: object
       properties:

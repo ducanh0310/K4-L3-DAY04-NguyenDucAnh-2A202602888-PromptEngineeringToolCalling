@@ -57,7 +57,7 @@ total_cases`, và tool result error đã được review thủ công.
 | Version | Prompt/tool change | Hypothesis | Metric | Before | After | Run file |
 |---|---|---|---|---:|---:|---|
 | v0 | baseline | Mốc đo ban đầu chưa tối ưu | case_accuracy |  | 0.6333 | runs/v0_B_base_openrouter_20260915T190207979718 |
-| v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 | 0.76 | runs/v1_B_base_openrouter_20260915T194501293869 |
+| v1 | Thêm hướng dẫn trích xuất environment trong tools.yaml và system_prompt.md | Giúp mô hình không bỏ sót môi trường (production/staging) khi tra cứu trạng thái dịch vụ | case_accuracy | 0.6333 |  0.7667 | runs/v1_B_base_openrouter_20260915T2003334022219 |
 | v2 |  |  |  |  |  |  |
 | v3 |  |  |  |  |  |  |
 
